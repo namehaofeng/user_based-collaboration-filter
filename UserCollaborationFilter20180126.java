@@ -41,26 +41,18 @@ public class UserCollaborationFilter {
 		a.put("2455", "2.5");
 		a.put("2968", "1");
 		a.put("3671", "3");
-		
-		
-		
-		
-
 		List<Map<String, String>> ss=x.cldysj();
 		Map<String, String> b=new HashMap<>();
 		for(int i=0;i<ss.size();i++){
-			
 			b=ss.get(i);
 				list=x.total(a,b);	
 				xiangsidu=x.comput(x.con(a, list), x.con(b, list));
 				minx=xiangsidu;
 				map.put(minx, i);
-		
 		}
 		
 		List<Double> li= new ArrayList<>();
-		for (Entry<Double, Integer> entry : map.entrySet()) { 
-	     	 
+		for (Entry<Double, Integer> entry : map.entrySet()) {  
 	     	   li.add(entry.getKey());
 	     	 }
 		double sz[]= new double[li.size()];
@@ -74,11 +66,9 @@ public class UserCollaborationFilter {
 					double temp;
 					temp=sz[i];
 					sz[i]=sz[j];
-					sz[j]=temp;
-					
+					sz[j]=temp;	
 				}
-			}
-			
+			}	
 		}
 		
 		List<Double> lii= new ArrayList<>();
@@ -87,16 +77,13 @@ public class UserCollaborationFilter {
 		}//此时li集合中存放的是计算得到的相似度（从大到小排列）
 		
 		System.out.println("相似度前10的用户分别是");
-		
 		Map<Map<String, String>, Double> ma= new HashMap<>();
 		for(int i=0;i<k;i++){//选取top-K
 			System.out.println("用户："+ss.get(map.get(lii.get(i)))+"相似度:"+lii.get(i));
-			
 			ma.put(ss.get(map.get(lii.get(i))), lii.get(i));
 		}
 		List<String> liss= new ArrayList<>();
 		for (Entry<Map<String, String>, Double> entry : ma.entrySet()) { 
-			
 			for(Entry<String, String> entry1 : entry.getKey().entrySet()) {
 				for(Entry<String, String> entrya : a.entrySet()){
 					if(entrya.getKey().equals(entry1.getKey())){
@@ -107,16 +94,12 @@ public class UserCollaborationFilter {
 					}
 				}
 			}
-     	  
      	 }
-//		for(int i=0;i<liss.size();i++){
-//			System.out.println(liss.get(i)+"===========");
-//		}
+		
 		Map<Double, String> mm=new HashMap<>();
 		for(int i=0;i<liss.size();i++){//计算a中不含有而邻居用户含有的电影的推荐指数
 			double d=0;
-			for (Entry<Map<String, String>, Double> entry : ma.entrySet()) { 
-				
+			for (Entry<Map<String, String>, Double> entry : ma.entrySet()) { 	
 				for(Entry<String, String> entry1 : entry.getKey().entrySet()) {
 					if(entry1.getKey().equals(liss.get(i))){
 						d=((Double.valueOf(entry1.getValue()))*entry.getValue())+d;
@@ -124,16 +107,16 @@ public class UserCollaborationFilter {
 					}
 					}
 				}
-		//	System.out.println("电影"+liss.get(i)+"的相似度为"+d);
-			
-			mm.put(d, liss.get(i));
-			
+		
+			mm.put(d, liss.get(i));		
 		}
+		
 		List<Double> lisi= new ArrayList<>();
+		
 		for (Entry<Double, String> entry : mm.entrySet()) { 
 			lisi.add(entry.getKey());
      	 }
-		//////
+		
 		double szz[]= new double[lisi.size()];
 		for(int i=0;i<lisi.size();i++){
 			szz[i]=lisi.get(i);
@@ -148,18 +131,14 @@ public class UserCollaborationFilter {
 					szz[j]=temp;
 					
 				}
-			}
-			
+			}	
 		}
 		
 		for(int i=0;i<szz.length;i++){
 			System.out.println("给该用户推荐的电影分别是:"+mm.get(szz[i])+"推荐指数是:"+szz[i]);
 		}
-	
-}
-	public void not_exict(){
-		
 	}
+	
 	public double comput(List<Double> list1,List<Double> list2){//计算向量余弦
 		double result=0;
 		double fenzi=0;
@@ -167,30 +146,26 @@ public class UserCollaborationFilter {
 		double zuofenmu=0;
 		double youfenmu=0;
 		for(int i=0;i<list1.size();i++){//分子的计算过程
-				fenzi=list1.get(i)*list2.get(i)+fenzi;
-				
+				fenzi=list1.get(i)*list2.get(i)+fenzi;		
 		}
 		
 		for(int i=0;i<list1.size();i++){//左分母的计算过程
-			
 				zuofenmu=(list1.get(i)*list1.get(i))+zuofenmu;
 		}
+		
 		for(int i=0;i<list2.size();i++){//右分母的计算过程
-			
 			youfenmu=(list2.get(i)*list2.get(i))+youfenmu;
-	}
+		}
 		
 		fenmu=Math.sqrt(zuofenmu)*Math.sqrt(youfenmu);
 		if (fenmu==0){
 			return 0;
 		}else{
-			result=fenzi/fenmu;
-			
-		}
-		
+			result=fenzi/fenmu;	
+		}	
 		return result;
 	}
-	
+
 	public List<Double> con(Map<String, String> a,List<String> list){//计算每个向量的0、1个数
 		List<Double> listt= new ArrayList<>();
 		for(int i=0;i<list.size();i++){
@@ -198,9 +173,7 @@ public class UserCollaborationFilter {
 				listt.add(Double.valueOf(a.get(list.get(i))));
 			}else listt.add(0.0);
 		}
-
 		return listt;
-		
 	}
 	
 	public List<String> total(Map<String, String> map, Map<String, String> map1){//将向量拼接
@@ -215,7 +188,6 @@ public class UserCollaborationFilter {
 	      	 }
 		 
 		for(int i=0;i<list2.size();i++){
-			
 			int ss=0;
 			for(int j=0;j<list1.size();j++){
 				if((list2.get(i).equals(list1.get(j)))){
@@ -224,7 +196,6 @@ public class UserCollaborationFilter {
 			}
 			if(ss==0){
 				int n=0;
-				
 					for(int j=0;j<list.size();j++){
 						if(list.get(j).equals(list2.get(i))){
 							n++;
@@ -234,14 +205,10 @@ public class UserCollaborationFilter {
 						list.add(list2.get(i));
 					}
 					
-				}
-				
-			
-			
+				}	
 		}
 		for(int i=0;i<list1.size();i++){
 			int n=0;
-			
 				for(int j=0;j<list.size();j++){
 					if(list.get(j).equals(list1.get(i))){
 						n++;
@@ -250,13 +217,9 @@ public class UserCollaborationFilter {
 				if(n==0){
 					list.add(list1.get(i));
 				}
-				
-			
-			
+			}
+			return list;
 		}
-
-		return list;
-	}
 	
 	public List<Map<String, String>> cldysj() throws IOException{//将电影数据集转换成目标格式
 		File file = new File("C:/Users/haofeng/Desktop/ratings.txt");
@@ -270,7 +233,7 @@ public class UserCollaborationFilter {
 			 String[] strA=str.split(",");
 			 list.add(strA);
         }
-       // System.out.println(list.size());
+     
         reader.close();
         int m=0;
         List<Map<String, String>> listt= new ArrayList<>();
@@ -295,6 +258,5 @@ public class UserCollaborationFilter {
         }
         System.out.println(listt.get(0).size());
        return listt;
-       
 	}
 }
